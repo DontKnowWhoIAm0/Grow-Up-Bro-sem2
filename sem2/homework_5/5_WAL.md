@@ -116,47 +116,6 @@ Get-Content .\table_dump.sql | docker exec -i GrowUpBro psql -U postgres -d grow
 
 ## Создать несколько seed
 
-#### a. Добавление тестовых данных
-```bash
-docker exec -t GrowUpBro pg_dump -U postgres -d GrowUpBro --schema-only > structure_dump.sql
-```
-```sql
-CREATE DATABASE GrowUpBro_test_a;
-\c growupbro_test_a;
-```
-```bash
-Get-Content .\structure_dump.sql | docker exec -i GrowUpBro psql -U postgres -d growupbro_test_a
-docker exec -it GrowUpBro psql -U postgres -d growupbro_test_a
-```
-![Результат выполнения запроса](images/4.png)
-
-- LSN до INSERT: 0/32373D10
-- LSN после INSERT: 0/32377C18
-- При вставке одной строки было записано 16136 байт в WAL, так как помимо самих данных записывается дополнительная служебная информация
-
-
-
-#### b. Dump одной таблицы
-```bash
-docker exec -t GrowUpBro pg_dump -U postgres -d GrowUpBro -t main.plant > table_dump.sql
-```
-```sql
-CREATE DATABASE GrowUpBro_test_b;
-\c growupbro_test_b;
-```
-```bash
-docker exec -i GrowUpBro psql -U postgres -d growupbro_test_b -c "CREATE SCHEMA main;"
-Get-Content .\table_dump.sql | docker exec -i GrowUpBro psql -U postgres -d growupbro_test_b
-```
-![Результат выполнения запроса](images/5.png)
-------
-
-
-
-
-
-## Создать несколько seed
-
 #### a. Вставка растений — файл plant_seed.sql.
 
 После первого запуска:
